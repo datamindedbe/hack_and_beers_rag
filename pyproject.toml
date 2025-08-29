@@ -1,0 +1,19 @@
+[project]
+name = "vaia-rag-workshop"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "RushilDaya",email = "rushildayabme@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "boto3 (>=1.40.20,<2.0.0)",
+    "openai (>=1.102.0,<2.0.0)",
+    "chromadb (>=1.0.20,<2.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
