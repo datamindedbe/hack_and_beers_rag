@@ -15,6 +15,12 @@ def get_chromadb_client(db_name:str)-> chromadb.ClientAPI:
     client = chromadb.PersistentClient(path=f"./local_dbs/{db_name}")
     return client
 
+def remove_collection(client: chromadb.ClientAPI, collection_name: str) -> None:
+    if collection_name in client.list_collections():
+        print(f"Removing existing collection {collection_name}")
+        client.delete_collection(collection_name)
+    else:
+        print(f"Collection {collection_name} does not exist nothing to remove")
 
 @dataclass
 class VectorDBItem:
@@ -23,6 +29,9 @@ class VectorDBItem:
     metadata: Optional[dict] = None
     distance: Optional[float] = None
     embedding: Optional[list[float]] = None
+
+
+
 
 
 class VectorCollection:
@@ -44,13 +53,15 @@ class VectorCollection:
             get_or_create=True,
         )
 
+
     @staticmethod
     def _embedding_function(token: str, model: OpenAIEmbeddingModel):
         return embedding_functions.OpenAIEmbeddingFunction(
             api_key=token, model_name=model.value
         )
 
-    def add_item(self, document, metadata, id) -> None:
+
+    def add_item(self, document, id,  metadata=None) -> None:
         self.chromadb_collection.add(
             documents=[document], metadatas=[metadata], ids=[id]
         )
@@ -71,7 +82,6 @@ class VectorCollection:
             query_texts=[input_text], n_results=n_results, include=["documents", "metadatas", "embeddings", "distances"]
         )
         items = []
-        print(response)
         for id, document, metadata, distance, embedding in zip(
             response["ids"][0],
             response["documents"][0],
