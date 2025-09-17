@@ -32,8 +32,6 @@ class VectorDBItem:
 
 
 
-
-
 class VectorCollection:
 
     def __init__(
