@@ -16,7 +16,7 @@ def get_chromadb_client(db_name:str)-> chromadb.ClientAPI:
     return client
 
 def remove_collection(client: chromadb.ClientAPI, collection_name: str) -> None:
-    if collection_name in client.list_collections():
+    if collection_name in [c.name for c in client.list_collections()]:
         print(f"Removing existing collection {collection_name}")
         client.delete_collection(collection_name)
     else:
